@@ -1,6 +1,7 @@
 var tv4 = require('tv4');
 var constraints = require('./parse-server-constraints.json');
 
+tv4.addSchema('#/definitions/PremiumFeeds', constraints.definitions.PremiumFeeds);
 tv4.addSchema('#/definitions/PushBehavior', constraints.definitions.PushBehavior);
 tv4.addSchema('#/definitions/Analytics', constraints.definitions.Analytics);
 tv4.addSchema('#/definitions/Advertising', constraints.definitions.Advertising);
@@ -10,6 +11,10 @@ tv4.addSchema('#/definitions/Traffic', constraints.definitions.Traffic);
 tv4.addSchema('#/definitions/Connect', constraints.definitions.Connect);
 tv4.addSchema('#/definitions/Video', constraints.definitions.Video);
 tv4.addSchema('#/definitions/StoreAccounts', constraints.definitions.StoreAccounts);
+tv4.addSchema('#/definitions/Channel', constraints.definitions.Channel);
+
+tv4.addSchema('#/definitions/MenuItem', constraints.definitions.MenuItem);
+tv4.addSchema('#/definitions/ChildMenuItem', constraints.definitions.ChildMenuItem);
 
 module.exports = {
 
