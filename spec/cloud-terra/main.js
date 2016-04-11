@@ -28,7 +28,6 @@ var validation=require("./validation.js");
 // for list model check from file config.json
 models.forEach(function(model) {
   Parse.Cloud.beforeSave(model, function(req, res) {
-    console.log(">>>>>>> model >>> " + model);
     // create object put param validate
     var object={modelName:model,req:req,res:res};
     //validate menu

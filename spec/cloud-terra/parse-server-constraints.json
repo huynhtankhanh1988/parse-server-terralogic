@@ -609,6 +609,9 @@
               "altitude": {
                 "type": "string",
                 "maxLength": 255
+              },
+              "isDefault": {
+                "type": "boolean"
               }
             }
           }
@@ -1048,6 +1051,12 @@
         },
         "createdAt": {
           "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "lastEditedBy": {
+          "type": "string"
         }
       }
     },
@@ -1059,6 +1068,9 @@
         "name"
       ],
       "properties": {
+        "id": {
+          "type": "number"
+        },
         "affiliateId": {
           "type": "string",
           "maxLength": 255
@@ -1089,7 +1101,10 @@
           }
         },
         "objectId": {
-          "type": "string"
+          "type": [
+            "string",
+            "number"
+          ]
         },
         "updatedAt": {
           "type": "string"
