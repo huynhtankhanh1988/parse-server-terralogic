@@ -1,0 +1,8 @@
+{
+  "models" : [
+    "DEVMenuConfig","DEVStyleConfig","DEVSettingConfig", "DEVItemConfig",
+    "QAMenuConfig" ,"QAStyleConfig" ,"QASettingConfig", "QAItemConfig",
+    "PROMenuConfig","PROStyleConfig","PROSettingConfig", "PROItemConfig",
+    "TerralogicMenuConfig","TerralogicStyleConfig","TerralogicSettingConfig","TerralogicItemConfig"
+  ]
+}
