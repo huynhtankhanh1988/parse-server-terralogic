@@ -114,9 +114,11 @@ function isEmpty(obj) {
   if (Array.isArray(obj)) {
     return obj.length == 0 ? true : false;
   }
+
   for (var prop in obj) {
     if (obj.hasOwnProperty(prop))
       return false;
   }
+  
   return true && JSON.stringify(obj) === JSON.stringify({});
 }
