@@ -851,41 +851,51 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "fgColor1": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+            "style": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "fgColor1": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "fgColor2": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "bgColor1": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "bgColor2": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "breakingNewsColor": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "font1": {
+                  "type": "string",
+                  "maxLength": 255
+                },
+                "headerFontColor": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "weatherForegroundColor": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                },
+                "weatherBackgroundColor": {
+                  "type": "string",
+                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
+                }
+              }
             },
-            "fgColor2": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "bgColor1": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "bgColor2": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "breakingNewsColor": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "font1": {
+            "name": {
               "type": "string",
               "maxLength": 255
-            },
-            "headerFontColor": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "weatherForegroundColor": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
-            },
-            "weatherBackgroundColor": {
-              "type": "string",
-              "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$"
             }
           }
         },
@@ -895,6 +905,9 @@
           "properties": {
             "premiumFeeds": {
               "$ref": "#/definitions/PremiumFeeds"
+            },
+            "search": {
+              "$ref": "#/definitions/Search"
             },
             "pushBehavior": {
               "$ref": "#/definitions/PushBehavior"

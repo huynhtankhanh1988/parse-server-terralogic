@@ -2,6 +2,7 @@ var tv4 = require('tv4');
 var constraints = require('./parse-server-constraints.json');
 
 tv4.addSchema('#/definitions/PremiumFeeds', constraints.definitions.PremiumFeeds);
+tv4.addSchema('#/definitions/Search', constraints.definitions.Search);
 tv4.addSchema('#/definitions/PushBehavior', constraints.definitions.PushBehavior);
 tv4.addSchema('#/definitions/Analytics', constraints.definitions.Analytics);
 tv4.addSchema('#/definitions/Advertising', constraints.definitions.Advertising);
@@ -17,105 +18,52 @@ tv4.addSchema('#/definitions/MenuItem', constraints.definitions.MenuItem);
 tv4.addSchema('#/definitions/ChildMenuItem', constraints.definitions.ChildMenuItem);
 
 module.exports = {
-
   //validate menu
   validateMenu: function(object) {
-    var result = {};
-    // name of model
-    var modelName = object.modelName;
-    // request
-    var req  = object.req;
-    //response
-    var res  = object.res;
-    // model
-    var model= req.object.toJSON();
-
-    console.log("body after remove>>> " + JSON.stringify(model));
-    result = tv4.validateMultiple(model, constraints.definitions.MenuConfig);
-
-    console.log("valid menu ? " + result.valid);
-
-    //check validate
-    if (!result.valid) {
-      res.error(result);
-    } else {
-      res.success();
-    }
+    console.log(">>>>>validateMenu");
+    validate(object, constraints.definitions.MenuConfig);
   },
 
   //validate style
   validateStyle: function(object) {
-    console.log("validateStyle");
-    var result = {};
-    // name of model
-    var modelName = object.modelName;
-    // request
-    var req  = object.req;
-    //response
-    var res  = object.res;
-    // model
-    var model= req.object.toJSON();
-    model = removeEmptyFields(model);
-
-    result = tv4.validateMultiple(model, constraints.definitions.StyleConfig, true);
-    //check validate
-    if (!result.valid) {
-      var endResult = customizeResult(result.errors);
-      res.error(result.errors);
-    } else {
-      res.success();
-    }
+    console.log(">>>>>validateStyle");
+    validate(object, constraints.definitions.StyleConfig);
   },
 
   //validate setting
   validateSetting: function(object) {
-    console.log(">>>>>>validateSetting");
-    var result = {};
-    // name of model
-    var modelName = object.modelName;
-    // request
-    var req  = object.req;
-    //response
-    var res  = object.res;
-    // model
-    var model= req.object.toJSON();
-    model = removeEmptyFields(model);
-
-    result = tv4.validateMultiple(model, constraints.definitions.SettingConfig);
-    //check validate
-    if (!result.valid) {
-      var endResult = customizeResult(result.errors);
-      res.error(endResult);
-    } else {
-      res.success();
-    }
+    console.log(">>>>>validateSetting");
+    validate(object, constraints.definitions.SettingConfig);
   },
 
   //validate setting
   validateItem: function(object) {
-    console.log("validateItem");
-    var result = {};
-    // name of model
-    var modelName = object.modelName;
-    // request
-    var req  = object.req;
-    //response
-    var res  = object.res;
-    // model
-    var model = req.object.toJSON();
-
-    result = tv4.validateMultiple(model, constraints.definitions.ItemConfig);
-    //check validate
-    if (!result.valid) {
-      var endResult = customizeResult(result.errors);
-      res.error(endResult);
-    } else {
-      res.success();
-    }
+    console.log(">>>>>validateItemConfig");
+    validate(object, constraints.definitions.ItemConfig);
   }
 };
 
-function customizeResult(jsonError) {
+function validate(object, constraints) {
+  var result = {};
+  // model
+  var model = object.req.object.toJSON();
+  model = removeEmptyFields(model);
+
+  result = tv4.validateMultiple(model, constraints);
+  console.log("isvalid: " + result.valid);
+
+  //check validate
+  if (!result.valid) {
+    var endResult = customizeErrors(result.errors);
+      console.log("Results>> " + JSON.stringify(endResult));
+    object.res.error(endResult);
+  } else {
+    object.res.success();
+  }
+
+}
+
+function customizeErrors(jsonError) {
   for (var i = 0; i < jsonError.length; i ++) {
     var dataPath = jsonError[i]["dataPath"];
     dataPath = dataPath.substring(1, dataPath.length).replace(/[/]/g, '.');
@@ -125,31 +73,6 @@ function customizeResult(jsonError) {
     delete jsonError[i]["subErrors"];
     delete jsonError[i]["stack"];
   }
-  return jsonError;
-}
-
-function groupingItemConfigErrors(jsonError) {
-  var setting = [];
-  var theme = [];
-  for (var i = 0; i < jsonError.length; i ++) {
-    var error = {};
-    var dataPath = jsonError[i]["dataPath"];
-    console.log(">>>> " + dataPath);
-    error['message'] = jsonError[i]["message"];
-    error['dataPath'] = dataPath;
-    if (dataPath.startsWith('setting')) {
-      console.log("setting");
-      setting.push[error];
-      delete jsonError[i];
-    } else if (dataPath.startsWith('theme')) {
-      theme.push[error];
-      delete jsonError[i];
-    }
-  }
-  //
-  jsonError.push(setting);
-  jsonError.push(theme);
-
   return jsonError;
 }
 
@@ -180,9 +103,14 @@ function removeEmptyFields(json) {
   Check if a properties is empty or not
 */
 function isEmpty(obj) {
+  if (typeof(obj) === 'boolean') {
+    return false;
+  }
+
   if (!obj) {
     return true;
   }
+
   if (Array.isArray(obj)) {
     return obj.length == 0 ? true : false;
   }
