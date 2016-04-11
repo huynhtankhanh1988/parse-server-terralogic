@@ -129,6 +129,7 @@
         },
         "parse": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "appId": {
               "type": "string",
@@ -142,6 +143,7 @@
         },
         "urbanAirship": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "appId": {
               "type": "string",
@@ -259,6 +261,7 @@
           "properties": {
             "outbrain": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "enabled": {
                   "type": "boolean"

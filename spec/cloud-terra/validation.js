@@ -50,12 +50,11 @@ function validate(object, constraints) {
   model = removeEmptyFields(model);
 
   result = tv4.validateMultiple(model, constraints);
-  console.log("isvalid: " + result.valid);
 
   //check validate
   if (!result.valid) {
     var endResult = customizeErrors(result.errors);
-      console.log("Results>> " + JSON.stringify(endResult));
+      console.log("Errors: " + JSON.stringify(endResult));
     object.res.error(endResult);
   } else {
     object.res.success();
@@ -119,6 +118,6 @@ function isEmpty(obj) {
     if (obj.hasOwnProperty(prop))
       return false;
   }
-  
+
   return true && JSON.stringify(obj) === JSON.stringify({});
 }
