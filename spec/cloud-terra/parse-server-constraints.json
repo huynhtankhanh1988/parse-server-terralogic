@@ -5,6 +5,7 @@
       "required": [
         "affiliateId"
       ],
+      "additionalProperties": false,
       "properties": {
         "affiliateId": {
           "type": "string",
@@ -49,6 +50,15 @@
         "name": {
           "type": "string",
           "maxLength": 255
+        },
+        "objectId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },
@@ -60,6 +70,7 @@
           "id",
           "name"
         ],
+        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
@@ -74,6 +85,7 @@
     },
     "PremiumFeeds": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "apiKey": {
           "type": "string",
@@ -87,6 +99,7 @@
     },
     "Search": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "baseUrl": {
           "type": "string",
@@ -105,6 +118,7 @@
     },
     "PushBehavior": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "enabled": {
           "type": "boolean"
@@ -153,6 +167,7 @@
     },
     "Analytics": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "googleAnalyticsId": {
           "type": "string",
@@ -162,6 +177,7 @@
     },
     "Advertising": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "bannerEnabled": {
           "type": "boolean"
@@ -188,6 +204,7 @@
         },
         "video": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "VASTUrl": {
               "type": "string",
@@ -205,6 +222,7 @@
         },
         "interstitialAds": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -237,6 +255,7 @@
         },
         "recommendation": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "outbrain": {
               "type": "object",
@@ -260,6 +279,7 @@
     },
     "BreakingNews": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "feedUrl": {
           "type": "string",
@@ -285,9 +305,11 @@
     },
     "Weather": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "general": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -299,6 +321,7 @@
         },
         "wsi": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "memberId": {
               "type": "string",
@@ -320,6 +343,7 @@
         },
         "severeWeather": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -336,9 +360,11 @@
         },
         "conditions": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "basic": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "enabled": {
                   "type": "boolean"
@@ -355,6 +381,7 @@
             },
             "detailed": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "enabled": {
                   "type": "boolean"
@@ -375,6 +402,7 @@
             },
             "sunMoon": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "enabled": {
                   "type": "boolean"
@@ -393,6 +421,7 @@
         },
         "textForecast": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -414,6 +443,7 @@
         },
         "dailyForecast": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -435,6 +465,7 @@
         },
         "hourlyForecast": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -456,6 +487,7 @@
         },
         "videoForecast": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -477,6 +509,7 @@
         },
         "interactiveRadar": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -493,6 +526,7 @@
         },
         "weatherNews": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -514,6 +548,7 @@
         },
         "weatherImages": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "enabled": {
               "type": "boolean"
@@ -535,6 +570,7 @@
         },
         "additionalOptions": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "disableWeatherLinkInBranding": {
               "type": "boolean"
@@ -548,6 +584,7 @@
           "type": "array",
           "items": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "name": {
                 "type": "string",
@@ -580,6 +617,7 @@
     },
     "Traffic": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "enabled": {
           "type": "boolean"
@@ -608,6 +646,7 @@
     },
     "Connect": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "newsTipEmail": {
           "type": "string",
@@ -646,6 +685,7 @@
         },
         "facebook": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "facebookAppId": {
               "type": "string",
@@ -688,6 +728,7 @@
     },
     "Video": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "closedCaptionUrl": {
           "type": "string",
@@ -703,9 +744,11 @@
     },
     "StoreAccounts": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "apple": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "userId": {
               "type": "string",
@@ -719,6 +762,7 @@
         },
         "googlePlay": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "userId": {
               "type": "string",
@@ -732,6 +776,7 @@
         },
         "roku": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "userId": {
               "type": "string",
@@ -745,6 +790,7 @@
         },
         "amazon": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "userId": {
               "type": "string",
@@ -760,6 +806,7 @@
     },
     "ItemConfig": {
       "type": "object",
+      "additionalProperties": false,
       "required": [
         "affiliateId",
         "isActive",
@@ -799,6 +846,7 @@
         },
         "theme": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "fgColor1": {
               "type": "string",
@@ -840,6 +888,7 @@
         },
         "setting": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
             "premiumFeeds": {
               "$ref": "#/definitions/PremiumFeeds"
@@ -873,6 +922,7 @@
             },
             "general": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "isAllowsEnableApp": {
                   "type": "boolean"
@@ -888,11 +938,42 @@
         "menuId": {
           "type": "string",
           "maxLength": 255
+        },
+        "objectId": {
+          "type": "string"
+        },
+        "auditTrail": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "creationDate": {
+              "type": "string"
+            },
+            "creationBy": {
+              "type": "string"
+            },
+            "lastEditedDate": {
+              "type": "string"
+            },
+            "lastEditedBy": {
+              "type": "string"
+            }
+          }
+        },
+        "uniqueAppId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },
     "SettingConfig": {
       "type": "object",
+      "additionalProperties": false,
       "required": [
         "affiliateId"
       ],
@@ -903,7 +984,14 @@
         },
         "general": {
           "type": "object",
+          "additionalProperties": false,
           "properties": {
+            "affiliateName": {
+              "type": "string"
+            },
+            "affiliateId": {
+              "type": "string"
+            },
             "availableApps": {
               "type": "array",
               "items": {
@@ -912,6 +1000,9 @@
               }
             },
             "cmsCustomer": {
+              "type": "boolean"
+            },
+            "isAllowsEnableApp": {
               "type": "boolean"
             }
           }
@@ -948,11 +1039,21 @@
         },
         "storeAccounts": {
           "$ref": "#/definitions/StoreAccounts"
+        },
+        "objectId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },
     "MenuConfig": {
       "type": "object",
+      "additionalProperties": false,
       "required": [
         "affiliateId",
         "name"
@@ -968,6 +1069,33 @@
         },
         "menu": {
           "$ref": "#/definitions/MenuItem"
+        },
+        "auditTrail": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "creationDate": {
+              "type": "string"
+            },
+            "creationBy": {
+              "type": "string"
+            },
+            "lastEditedDate": {
+              "type": "string"
+            },
+            "lastEditedBy": {
+              "type": "string"
+            }
+          }
+        },
+        "objectId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
         }
       }
     },
@@ -975,16 +1103,30 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "title": {
             "type": "string",
             "maxLength": 255
+          },
+          "level": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "typeFamily": {
+            "type": "string"
+          },
+          "showInVersion": {
+            "type": "string"
           },
           "openInBrowser": {
             "type": "boolean"
           },
           "feed": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "url": {
                 "type": "string",
@@ -998,6 +1140,7 @@
           },
           "module": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "weather": {
                 "type": "boolean"
@@ -1021,7 +1164,7 @@
             "type": "boolean"
           },
           "itemsInHomePage": {
-            "type": "number"
+            "type": "integer"
           },
           "headerFontColor": {
             "type": "string",
@@ -1034,6 +1177,12 @@
           "viewLayout": {
             "type": "string",
             "maxLength": 255
+          },
+          "categoryNo": {
+            "type": "number"
+          },
+          "categoryType": {
+            "type": "string"
           },
           "menu": {
             "$ref": "#/definitions/ChildMenuItem"
@@ -1045,16 +1194,30 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "title": {
             "type": "string",
             "maxLength": 255
+          },
+          "level": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "typeFamily": {
+            "type": "string"
+          },
+          "showInVersion": {
+            "type": "string"
           },
           "openInBrowser": {
             "type": "boolean"
           },
           "feed": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "url": {
                 "type": "string",
@@ -1068,6 +1231,7 @@
           },
           "module": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "weather": {
                 "type": "boolean"
@@ -1091,7 +1255,7 @@
             "type": "boolean"
           },
           "itemsInHomePage": {
-            "type": "number"
+            "type": "integer"
           },
           "headerFontColor": {
             "type": "string",
@@ -1104,6 +1268,12 @@
           "viewLayout": {
             "type": "string",
             "maxLength": 255
+          },
+          "categoryNo": {
+            "type": "number"
+          },
+          "categoryType": {
+            "type": "string"
           }
         }
       }
