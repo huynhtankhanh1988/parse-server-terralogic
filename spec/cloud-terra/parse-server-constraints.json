@@ -197,10 +197,12 @@
           "type": "boolean"
         },
         "inlineRefresh": {
-          "type": "integer"
+          "type": "string",
+          "maxLength": 255
         },
         "inlineLocation": {
-          "type": "integer"
+          "type": "string",
+          "maxLength": 255
         },
         "inlineEnabled": {
           "type": "boolean"
