@@ -17,6 +17,23 @@ tv4.addSchema('#/definitions/Channel', constraints.definitions.Channel);
 tv4.addSchema('#/definitions/MenuItem', constraints.definitions.MenuItem);
 tv4.addSchema('#/definitions/ChildMenuItem', constraints.definitions.ChildMenuItem);
 
+/**
+  Checking field data with date time format
+*/
+tv4.addFormat('date-time', function (data, schema) {
+    if (!data) {
+      return null;
+    }
+    var check = new Date(data);
+    valid = !isNaN(check.valueOf());
+
+    if (!valid) {
+      return "Invalid date";
+    } else {
+      return null;
+    }
+});
+
 module.exports = {
   //validate menu
   validateMenu: function(object) {
@@ -50,7 +67,7 @@ function validate(object, constraints) {
   model = removeEmptyFields(model);
 
   result = tv4.validateMultiple(model, constraints);
-
+  console.log("valid: " + result.valid);
   //check validate
   if (!result.valid) {
     var endResult = customizeErrors(result.errors);
