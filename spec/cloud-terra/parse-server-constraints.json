@@ -197,11 +197,17 @@
           "type": "boolean"
         },
         "inlineRefresh": {
-          "type": "string",
+          "type": [
+            "string",
+            "integer"
+          ],
           "maxLength": 255
         },
         "inlineLocation": {
-          "type": "string",
+          "type": [
+            "string",
+            "integer"
+          ],
           "maxLength": 255
         },
         "inlineEnabled": {
@@ -297,7 +303,10 @@
           "maxLength": 255
         },
         "itemsOnHomePage": {
-          "type": "string",
+          "type": [
+            "string",
+            "integer"
+          ],
           "maxLength": 255
         },
         "showAds": {
@@ -601,7 +610,10 @@
                 "maxLength": 255
               },
               "zipCode": {
-                "type": "string",
+                "type": [
+                  "string",
+                  "integer"
+                ],
                 "maxLength": 255
               },
               "latitude": {
@@ -621,35 +633,6 @@
               }
             }
           }
-        }
-      }
-    },
-    "Traffic": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "enabled": {
-          "type": "boolean"
-        },
-        "defaultCenterLat": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "defaultCenterLong": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "defaultAltitude": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "defaultOverlays": {
-          "type": "string",
-          "maxLength": 255
-        },
-        "defaultLayer": {
-          "type": "string",
-          "maxLength": 255
         }
       }
     },
@@ -930,9 +913,6 @@
             "weather": {
               "$ref": "#/definitions/Weather"
             },
-            "traffic": {
-              "$ref": "#/definitions/Traffic"
-            },
             "connect": {
               "$ref": "#/definitions/Connect"
             },
@@ -961,6 +941,12 @@
           "type": "string",
           "maxLength": 255
         },
+        "xmlUrl": {
+          "type": "string"
+        },
+        "jsonUrl": {
+          "type": "string"
+        },
         "objectId": {
           "type": "string"
         },
@@ -981,6 +967,13 @@
             },
             "lastEditedBy": {
               "type": "string"
+            },
+            "publishBy": {
+              "type": "string"
+            },
+            "publishAt": {
+              "type": "string",
+              "format": "date-time"
             }
           }
         },
@@ -1056,9 +1049,6 @@
         },
         "weather": {
           "$ref": "#/definitions/Weather"
-        },
-        "traffic": {
-          "$ref": "#/definitions/Traffic"
         },
         "connect": {
           "$ref": "#/definitions/Connect"

@@ -8,7 +8,6 @@ tv4.addSchema('#/definitions/Analytics', constraints.definitions.Analytics);
 tv4.addSchema('#/definitions/Advertising', constraints.definitions.Advertising);
 tv4.addSchema('#/definitions/BreakingNews', constraints.definitions.BreakingNews);
 tv4.addSchema('#/definitions/Weather', constraints.definitions.Weather);
-tv4.addSchema('#/definitions/Traffic', constraints.definitions.Traffic);
 tv4.addSchema('#/definitions/Connect', constraints.definitions.Connect);
 tv4.addSchema('#/definitions/Video', constraints.definitions.Video);
 tv4.addSchema('#/definitions/StoreAccounts', constraints.definitions.StoreAccounts);
