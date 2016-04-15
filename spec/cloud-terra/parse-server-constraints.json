@@ -947,6 +947,9 @@
         "jsonUrl": {
           "type": "string"
         },
+        "isPublished": {
+          "type": "boolean"
+        },
         "objectId": {
           "type": "string"
         },
