@@ -64,7 +64,6 @@ function validate(object, constraints) {
   // model
   var model = object.req.object.toJSON();
   model = removeEmptyFields(model);
-  console.log("model>>> " + JSON.stringify(model));
 
   result = tv4.validateMultiple(model, constraints);
   console.log("valid: " + result.valid);

@@ -1288,6 +1288,9 @@
             "null"
           ]
         },
+        "isPublished": {
+          "type": "boolean"
+        },
         "objectId": {
           "type": [
             "string",
