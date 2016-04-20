@@ -1507,10 +1507,7 @@
           }
         },
         "uniqueAppId": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string"
         },
         "updatedAt": {
           "type": [
