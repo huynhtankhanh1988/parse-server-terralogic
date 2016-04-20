@@ -97,7 +97,9 @@ function customizeErrors(jsonError) {
 function removeEmptyFields(json) {
   for (var att in json) {
     if (isEmpty(json[att])) {
-      delete json[att];
+      if (typeof(json[att]) != 'object') {
+         json[att] = null;
+      }
     } else {
       var child = json[att];
       if (typeof(child) == 'object') {
