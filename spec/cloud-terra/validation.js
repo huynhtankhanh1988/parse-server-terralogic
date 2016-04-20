@@ -27,10 +27,19 @@ tv4.addFormat('date-time', function (data, schema) {
     valid = !isNaN(check.valueOf());
 
     if (!valid) {
-      return "Invalid date";
+      return "Invalid datetime format.";
     } else {
       return null;
     }
+});
+/**
+  Set custome message
+*/
+tv4.setErrorReporter(function (error, data, schema) {
+  if(schema.errorMessage && schema.errorMessage[error.code]){
+      return schema.errorMessage[error.code];
+  }
+  return;
 });
 
 module.exports = {
