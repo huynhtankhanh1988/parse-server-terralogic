@@ -1,29 +1,6 @@
-var config=require("./config.json");
-var models=config["models"];
-
-var validation=require("./validation.js");
-
-// Demo example cloud code event save and delete
-//
-// Parse.Cloud.beforeSave('enviroment_model', function(req, res) {
-//   res.success();
-// });
-//
-// Parse.Cloud.afterSave('enviroment_model', function(req) {
-//   var obj = new Parse.Object('enviroment_model');
-//   obj.set('proof', req.object.id);
-//   obj.save();
-// });
-//
-// Parse.Cloud.beforeDelete('enviroment_model', function(req, res) {
-//   res.success();
-// });
-//
-// Parse.Cloud.afterDelete('enviroment_model', function(req) {
-//   var obj = new Parse.Object('enviroment_model');
-//   obj.set('proof', req.object.id);
-//   obj.save();
-// });
+var config = require("./config.json");
+var models = config["models"];
+var validation = require("./validation.js");
 
 // for list model check from file config.json
 models.forEach(function(model) {

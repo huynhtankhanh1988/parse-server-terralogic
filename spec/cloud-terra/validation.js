@@ -82,7 +82,12 @@ function validate(object, constraints) {
       console.log("Errors: " + JSON.stringify(endResult));
     object.res.error(endResult);
   } else {
-    object.res.success();
+    //validate unique
+    if (object.modelName.indexOf("ItemConfig")>=0){
+          validateDataItemConfig(object);
+        }else{
+          object.res.success();
+        }
   }
 
 }
@@ -98,6 +103,62 @@ function customizeErrors(jsonError) {
     delete jsonError[i]["stack"];
   }
   return jsonError;
+}
+
+/**
+* Validate data of item config
+*/
+function validateDataItemConfig(object){
+  var env = object.modelName.replace("ItemConfig","");
+
+  // check duplicate name
+  var queryDuplicateName = new Parse.Query(object.modelName);
+  queryDuplicateName.equalTo("name", object.req.object.get("name"));
+  if(object.req.object.id){
+    queryDuplicateName.notEqualTo("objectId", object.req.object.id);
+  }
+
+  // check exit app
+  var queryExistApp = new Parse.Query(env+"AppConfig");
+  queryExistApp.equalTo("objectId", object.req.object.get("uniqueAppId"));
+
+  // check duplicate uniqueAppId
+  var queryDuplicateUniqueAppId = new Parse.Query(object.modelName);
+  queryDuplicateUniqueAppId.equalTo("uniqueAppId", object.req.object.get("uniqueAppId"));
+  if(object.req.object.id){
+    queryDuplicateUniqueAppId.notEqualTo("objectId", object.req.object.id);
+  }
+
+  var promises =[];
+  promises.push(queryDuplicateName.first()); //0
+  promises.push(queryExistApp.first()); //1
+  promises.push(queryDuplicateUniqueAppId.first()); //3
+
+  Promise.all(promises).then(function(results){
+    var arrErr = [];
+    // check duplicate name
+    if(results[0]){
+      arrErr.push("App name is existed. ");
+    }
+    //check exit app
+    if(!results[1]){
+      arrErr.push("uniqueAppId is not existed (AppConfig). ");
+    }
+
+    // check duplicate uniqueAppId
+    if(results[2]){
+      arrErr.push("uniqueAppId is existed.");
+    }
+
+    if(arrErr.length >0){
+      object.res.error(arrErr.join(","));
+    }else{
+      object.res.success();
+    }
+
+  }).catch(function(error){
+    object.res.success();
+  });
 }
 
 /**
