@@ -1,0 +1,8 @@
+{
+  "styleConstraint":"StyleConstraint"
+  ,"itemConstraint":"ItemConstraint"
+  ,"settingConstraint":"SettingConstraint"
+  ,"menuConstraint":"MenuConstraint"
+  ,"menuItemConstraint":"MenuItemConstraint"
+  ,"shareConstraint":"ShareConstraint"
+}
