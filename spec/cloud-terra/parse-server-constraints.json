@@ -172,6 +172,7 @@
         "resultCount": {
           "type": [
             "string",
+            "integer",
             "null"
           ],
           "maxLength": 255
