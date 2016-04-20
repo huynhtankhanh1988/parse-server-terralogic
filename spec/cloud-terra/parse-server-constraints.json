@@ -1366,26 +1366,6 @@
                   "errorMessage": {
                     "202": "Invalid hex color."
                   }
-                },
-                "weatherForegroundColor": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$",
-                  "errorMessage": {
-                    "202": "Invalid hex color."
-                  }
-                },
-                "weatherBackgroundColor": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "pattern": "^(#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{6})$",
-                  "errorMessage": {
-                    "202": "Invalid hex color."
-                  }
                 }
               }
             },
