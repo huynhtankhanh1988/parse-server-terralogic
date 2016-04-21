@@ -139,7 +139,7 @@ function validateDataItemConfig(object){
   // check exist menu
   var queryExistMenu = new Parse.Query(env+"MenuConfig");
   if(object.req.object.get("menuId")){
-    queryExistApp.equalTo("objectId", object.req.object.get("menuId"));
+    queryExistMenu.equalTo("objectId", object.req.object.get("menuId"));
   }
 
   var promises =[];
