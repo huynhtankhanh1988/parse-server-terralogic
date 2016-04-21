@@ -108,7 +108,7 @@ module.exports = {
 
         var key = json ? (json.key ? json.key : "" ) : "";
         if(key != ""){
-           return cache.definitions["key"];
+           return cache.definitions[key];
         }
         return cache;
 

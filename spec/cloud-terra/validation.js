@@ -1,5 +1,7 @@
 var tv4 = require('tv4');
-var constraints = require('./parse-server-constraints.json');
+// var constraints = require('./parse-server-constraints.json');
+var cacheConstraint = require("./constraint");
+var constraints = cacheConstraint.getConstraint({});
 
 tv4.addSchema('#/definitions/PremiumFeeds', constraints.definitions.PremiumFeeds);
 tv4.addSchema('#/definitions/Search', constraints.definitions.Search);

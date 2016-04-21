@@ -83,5 +83,6 @@ Parse.Cloud.afterSave(cfg.collectionName, function(req) {
 
 });
 
-
-
+Parse.Cloud.define('getAllConstraints', function(req, res) {
+  res.success(cacheConstraint.getConstraint(null));
+});
