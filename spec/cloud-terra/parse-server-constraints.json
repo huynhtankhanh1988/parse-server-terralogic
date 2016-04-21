@@ -1454,7 +1454,14 @@
             "string",
             "null"
           ],
-          "maxLength": 255
+          "maxLength": 255,
+          "enum": [
+            "global",
+            "custom"
+          ],
+          "errorMessage": {
+            "1": "themeType must be one of [global, custom]"
+          }
         },
         "menuId": {
           "type": [
