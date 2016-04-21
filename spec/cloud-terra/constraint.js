@@ -1,89 +1,125 @@
-var collection = require("./constraint-collections");
-var defaultDefinition = require("./parse-server-constraints");
-var definition = null;
-function buildConstraint(json){
+const deepcopy = require('deepcopy');
+var cfg = require("./constraint-type");
 
-    var style = json.style;
-    var item =json.item;
-    var setting =json.setting;
-    var menu =json.menu;
-    var menuItem =json.menuItem;
-    var share = json.share;
+//default constraint from data file.
+var cache = require("./parse-server-constraints");
 
-    if(style == null || item == null || setting == null || menu == null || menuItem == null || share == null){
-        console.log("One of constraints have not been set in DB so, get default from file");
-        definition = defaultDefinition;
+function buildShareConstraint(shareJson){
+
+    //todo need to dynamic column name here.
+    //hardcode temporary
+    cache.definition.Channel = share.Channel;
+    cache.definition.PremiumFeeds = share.PremiumFeeds;
+    cache.definition.Search = share.Search;
+    cache.definition.PushBehavior = share.PushBehavior;
+    cache.definition.Analytics = share.Analytics;
+    cache.definition.Advertising = share.Advertising;
+    cache.definition.BreakingNews = share.BreakingNews;
+    cache.definition.Weather = share.Weather;
+    cache.definition.Connect = share.Connect;
+    cache.definition.Video = share.Video;
+    cache.definition.StoreAccounts = share.StoreAccounts;
+}
+
+function refineJson(data){
+    if(data){
+        var str = JSON.stringify(data);
+        str = str.replace(/\"\#\$ref\":/g , "\"$ref\":");
+        return JSON.parse(str);
+    }
+    return data;
+}
+
+function setConstraint(parseOjbArr){
+
+    var style =  getSpecificConstraint(cfg.constraintType.style,parseOjbArr);
+    var item =getSpecificConstraint(cfg.constraintType.item,parseOjbArr);
+    var setting =getSpecificConstraint(cfg.constraintType.setting,parseOjbArr);
+    var menu =getSpecificConstraint(cfg.constraintType.menu,parseOjbArr);
+    var menuItem =getSpecificConstraint(cfg.constraintType.menuItem,parseOjbArr);
+    var share = getSpecificConstraint(cfg.constraintType.share,parseOjbArr);
+
+    //for style
+    if(style != null){
+        cache.definitions.StyleConfig = style;
     }
 
-    //0 get style constraint
+    //for share
+    if(share!= null){
+        buildShareConstraint(share);
+    }
 
-    //1 get item constraint
+    //for item constraint
+    if(item!= null){
+        cache.definitions.ItemConfig = item;
+    }
 
-    //2 get setting constraint
+    //for setting constraint
+    if(setting!= null){
+        cache.definitions.SettingConfig = setting;
+    }
 
-    //3 get menu constraint
+    //for menu constraint
+    if(menu!= null){
+        cache.definitions.MenuConfig = menu;
+    }
 
-    //4 get menu item constraint
+    //for menu item constraint
+    if(menuItem!= null){
+        cache.definitions.MenuItem = menuItem;
+
+        //for child menu constraint
+        var childMenuItem = deepcopy(menuItem);
+        delete childMenuItem.items.properties["menu"];
+json
+        cache.definitions.ChildMenuItem = childMenuItem;
+
+    }
+    //
+    cache = refineJson(cache);
 }
-function getDataConstraint(collName){
-    var query = new Parse.Query(collName);
-    return query.first()
-}
+
+
+
+function getSpecificConstraint(constraintType, parseOjbArr){
+    var constraint = null;
+    for(var i=0;i<parseOjbArr.length;i++){
+
+        var  itemData = parseOjbArr[i].toJSON();
+
+        if(itemData.constraintType === constraintType){
+            constraint =itemData;
+            //remove unused fields
+            delete constraint["constraintType"];
+            delete constraint["createdAt"];
+            delete constraint["updatedAt"];
+            delete constraint["objectId"];
+            break;
+        }
+    }
+    return constraint;
+};
 
 module.exports = {
-    notifySaved: function(json){
+    notifySaved: function(parseOjbArr){
+        setConstraint(parseOjbArr);
     },
-    getConstraint(json){
-        if(definition != null){
-            //return constraint definition
+    getConstraint: function(json){
+
+        var key = json ? (json.key ? json.key : "" ) : "";
+        if(key != ""){
+           return cache.definitions["key"];
         }
-
-        //0 get style constraint
-
-        //1 get item constraint
-
-        //2 get setting constraint
-
-        //3 get menu constraint
-
-        //4 get menu item constraint
+        return cache;
 
     },
-    initConstraint(json){
-        var promises = [];
-        //0 style constraint
-        promises.push(getDataConstraint(collection.styleConstraint));
+    initConstraint: function(){
+        var query = new Parse.Query(cfg.collectionName);
+        query.find().then(function(result){
+            if(result){
+                setConstraint(result);
+            }
 
-        //1 item constraint
-        promises.push(getDataConstraint(collection.itemConstraint));
-
-        //2 setting constraint
-        promises.push(getDataConstraint(collection.settingConstraint));
-
-        //3 get menu constraint
-        promises.push(getDataConstraint(collection.menuConstraint));
-
-        //4 get menu item constraint
-        promises.push(getDataConstraint(collection.menuItemConstraint));
-
-        //5 get share constraint
-        promises.push(getDataConstraint(collection.shareConstraint));
-
-        Promise.all(promises).then(function(results){
-            var style = JSON.parse(results[0]);
-            var item = JSON.parse(results[1]);
-            var setting = JSON.parse(results[2]);
-            var menu = JSON.parse(results[3]);
-            var menuItem = JSON.parse(results[4]);
-            var share = JSON.parse(results[5]);
-            buildConstraint({
-                style:      (style.results.length > 0 ? style.results[0]: null)
-                ,item:      (item.results.length > 0 ? item.results[0]: null)
-                ,setting:   (setting.results.length > 0 ? setting.results[0]: null)
-                ,menu:      (menu.results.length > 0 ? menu.results[0]: null)
-                ,menuItem:  (menuItem.results.length > 0 ? menuItem.results[0]: null)
-                ,share:    (shared.results.length > 0 ? shared.results[0]: null)
-            });
         }).catch(function(error){
             console.log("initConstraint",error);
         });
