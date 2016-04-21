@@ -86,7 +86,7 @@ function validate(object, constraints) {
     if (object.modelName.indexOf("StyleConfig") >= 0) {
         //validate data style config
         validateDataStyleSetting("StyleConfig",object);
-     else if(object.modelName.indexOf("SettingConfig")>=0) {
+     } else if(object.modelName.indexOf("SettingConfig")>=0) {
         //validate data setting config
         validateDataStyleSetting("SettingConfig",object);
     } else if(object.modelName.indexOf("ItemConfig") >= 0){
@@ -124,7 +124,7 @@ function validateDataItemConfig(object){
   if(object.req.object.id){
     queryDuplicateName.notEqualTo("objectId", object.req.object.id);
   }
-  
+
   // check exit app
   var queryExistApp = new Parse.Query(env+"AppConfig");
   queryExistApp.equalTo("objectId", object.req.object.get("uniqueAppId"));
