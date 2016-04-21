@@ -1277,11 +1277,33 @@
         },
         "appType": {
           "type": "string",
-          "maxLength": 255
+          "maxLength": 255,
+          "enum": [
+            "iPhone",
+            "Android",
+            "iPad",
+            "Roku",
+            "Apple TV",
+            "Fire TV"
+          ],
+          "errorMessage": {
+            "1": "appType must be one of [iPhone, Android, iPad, Roku, Apple TV, Fire TV]."
+          }
         },
         "platform": {
           "type": "string",
-          "maxLength": 255
+          "maxLength": 255,
+          "enum": [
+            "iOS",
+            "Android",
+            "iPad",
+            "Roku",
+            "Apple TV",
+            "Fire TV"
+          ],
+          "errorMessage": {
+            "1": "platform must be one of [iOS, Android, iPad, Roku, Apple TV, Fire TV]."
+          }
         },
         "version": {
           "type": [
@@ -1432,7 +1454,14 @@
             "string",
             "null"
           ],
-          "maxLength": 255
+          "maxLength": 255,
+          "enum": [
+            "global",
+            "custom"
+          ],
+          "errorMessage": {
+            "1": "themeType must be one of [global, custom]"
+          }
         },
         "menuId": {
           "type": [

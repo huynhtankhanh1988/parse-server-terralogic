@@ -45,25 +45,25 @@ tv4.setErrorReporter(function (error, data, schema) {
 module.exports = {
   //validate menu
   validateMenu: function(object) {
-    console.log(">>>>>validateMenu");
+    console.log(">>>>>validate Menu Config");
     validate(object, constraints.definitions.MenuConfig);
   },
 
   //validate style
   validateStyle: function(object) {
-    console.log(">>>>>validateStyle");
+    console.log(">>>>>validate Style Config");
     validate(object, constraints.definitions.StyleConfig);
   },
 
   //validate setting
   validateSetting: function(object) {
-    console.log(">>>>>validateSetting");
+    console.log(">>>>>validate Setting Config");
     validate(object, constraints.definitions.SettingConfig);
   },
 
   //validate setting
   validateItem: function(object) {
-    console.log(">>>>>validateItemConfig");
+    console.log(">>>>>validate Item Config");
     validate(object, constraints.definitions.ItemConfig);
   }
 };
@@ -82,12 +82,19 @@ function validate(object, constraints) {
       console.log("Errors: " + JSON.stringify(endResult));
     object.res.error(endResult);
   } else {
-    //validate unique
-    if (object.modelName.indexOf("ItemConfig")>=0){
-          validateDataItemConfig(object);
-        }else{
-          object.res.success();
-        }
+    //validate data
+    if (object.modelName.indexOf("StyleConfig") >= 0) {
+        //validate data style config
+        validateDataStyleSetting("StyleConfig",object);
+     } else if(object.modelName.indexOf("SettingConfig")>=0) {
+        //validate data setting config
+        validateDataStyleSetting("SettingConfig",object);
+    } else if(object.modelName.indexOf("ItemConfig") >= 0){
+        //validate data item config
+        validateDataItemConfig(object);
+    } else {
+        object.res.success();
+    }
   }
 
 }
@@ -129,10 +136,17 @@ function validateDataItemConfig(object){
     queryDuplicateUniqueAppId.notEqualTo("objectId", object.req.object.id);
   }
 
+  // check exist menu
+  var queryExistMenu = new Parse.Query(env+"MenuConfig");
+  if(object.req.object.get("menuId")){
+    queryExistMenu.equalTo("objectId", object.req.object.get("menuId"));
+  }
+
   var promises =[];
   promises.push(queryDuplicateName.first()); //0
   promises.push(queryExistApp.first()); //1
-  promises.push(queryDuplicateUniqueAppId.first()); //3
+  promises.push(queryDuplicateUniqueAppId.first()); //2
+  promises.push(queryExistMenu.first()); //3
 
   Promise.all(promises).then(function(results){
     var arrErr = [];
@@ -140,7 +154,7 @@ function validateDataItemConfig(object){
     if(results[0]){
       arrErr.push("App name is existed. ");
     }
-    //check exit app
+    //check exist app
     if(!results[1]){
       arrErr.push("uniqueAppId is not existed (AppConfig). ");
     }
@@ -150,6 +164,45 @@ function validateDataItemConfig(object){
       arrErr.push("uniqueAppId is existed.");
     }
 
+    //check exist menu
+    if(object.req.object.get("menuId") && !results[3]){
+      arrErr.push("menuId is not existed (MenuConfig). ");
+    }
+    //show list message
+    if(arrErr.length >0){
+      object.res.error(arrErr.join(","));
+    }else{
+      object.res.success();
+    }
+
+  }).catch(function(error){
+    object.res.success();
+  });
+}
+
+/**
+* Validate data style config and setting config
+*/
+function validateDataStyleSetting(schemal,object){
+  var env = object.modelName.replace(schemal,"");
+
+  // check duplicate affiliateId
+  var queryDuplicateAffiliate = new Parse.Query(object.modelName);
+  queryDuplicateAffiliate.equalTo("affiliateId", object.req.object.get("affiliateId"));
+  if(object.req.object.id){
+    queryDuplicateAffiliate.notEqualTo("objectId", object.req.object.id);
+  }
+
+  var promises =[];
+  promises.push(queryDuplicateAffiliate.first()); //0
+
+  Promise.all(promises).then(function(results){
+    var arrErr = [];
+    // check duplicate affiliateId
+    if(results[0]){
+      arrErr.push("affiliateId "+object.req.object.get("affiliateId")+" is existed. ");
+    }
+    //show list message
     if(arrErr.length >0){
       object.res.error(arrErr.join(","));
     }else{
