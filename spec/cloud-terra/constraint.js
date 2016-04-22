@@ -4,28 +4,27 @@ var cfg = require("./constraint-type");
 //default constraint from data file.
 var cache = require("./parse-server-constraints");
 
-var objectIdArr =[]; // store all record id
-var constraintTypeArr =[]; //contain all constraint type
+var objectIdArr = []; // store all record id
+var constraintTypeArr = []; //contain all constraint type
 
 function buildShareConstraint(share){
-
     //todo need to dynamic column name here.
     //hardcode temporary
-    cache.definition.Channel = share.Channel;
-    cache.definition.PremiumFeeds = share.PremiumFeeds;
-    cache.definition.Search = share.Search;
-    cache.definition.PushBehavior = share.PushBehavior;
-    cache.definition.Analytics = share.Analytics;
-    cache.definition.Advertising = share.Advertising;
-    cache.definition.BreakingNews = share.BreakingNews;
-    cache.definition.Weather = share.Weather;
-    cache.definition.Connect = share.Connect;
-    cache.definition.Video = share.Video;
-    cache.definition.StoreAccounts = share.StoreAccounts;
+    cache.definitions.Channel = share.Channel;
+    cache.definitions.PremiumFeeds = share.PremiumFeeds;
+    cache.definitions.Search = share.Search;
+    cache.definitions.PushBehavior = share.PushBehavior;
+    cache.definitions.Analytics = share.Analytics;
+    cache.definitions.Advertising = share.Advertising;
+    cache.definitions.BreakingNews = share.BreakingNews;
+    cache.definitions.Weather = share.Weather;
+    cache.definitions.Connect = share.Connect;
+    cache.definitions.Video = share.Video;
+    cache.definitions.StoreAccounts = share.StoreAccounts;
 }
 
 function refineJson(data){
-    if(data){
+    if (data) {
         var str = JSON.stringify(data);
         str = str.replace(/\"\#\$ref\":/g , "\"$ref\":");
         return JSON.parse(str);
@@ -34,41 +33,40 @@ function refineJson(data){
 }
 
 function setConstraint(parseOjbArr){
-
     var style =  getSpecificConstraint(cfg.constraintType.style,parseOjbArr);
-    var item =getSpecificConstraint(cfg.constraintType.item,parseOjbArr);
-    var setting =getSpecificConstraint(cfg.constraintType.setting,parseOjbArr);
-    var menu =getSpecificConstraint(cfg.constraintType.menu,parseOjbArr);
-    var menuItem =getSpecificConstraint(cfg.constraintType.menuItem,parseOjbArr);
+    var item = getSpecificConstraint(cfg.constraintType.item,parseOjbArr);
+    var setting = getSpecificConstraint(cfg.constraintType.setting,parseOjbArr);
+    var menu = getSpecificConstraint(cfg.constraintType.menu,parseOjbArr);
+    var menuItem = getSpecificConstraint(cfg.constraintType.menuItem,parseOjbArr);
     var share = getSpecificConstraint(cfg.constraintType.share,parseOjbArr);
 
     //for style
-    if(style != null){
+    if (style != null) {
         cache.definitions.StyleConfig = style;
     }
 
     //for share
-    if(share!= null){
+    if (share != null) {
         buildShareConstraint(share);
     }
 
     //for item constraint
-    if(item!= null){
+    if (item != null) {
         cache.definitions.ItemConfig = item;
     }
 
     //for setting constraint
-    if(setting!= null){
+    if (setting != null) {
         cache.definitions.SettingConfig = setting;
     }
 
     //for menu constraint
-    if(menu!= null){
+    if (menu != null) {
         cache.definitions.MenuConfig = menu;
     }
 
     //for menu item constraint
-    if(menuItem!= null){
+    if (menuItem != null) {
         cache.definitions.MenuItem = menuItem;
 
         //for child menu constraint
@@ -85,23 +83,20 @@ function setConstraint(parseOjbArr){
 
 function getSpecificConstraint(constraintType, parseOjbArr){
     var constraint = null;
-    for(var i=0;i<parseOjbArr.length;i++){
-
-        var  itemData = parseOjbArr[i].toJSON();
-
-        if(itemData.constraintType === constraintType){
-
+    for (var i = 0; i < parseOjbArr.length; i++) {
+        var itemData = parseOjbArr[i].toJSON();
+        if (itemData.constraintType === constraintType) {
             //append ojbectId
-            if(!objectIdArr.includes(itemData.objectId)){
-                objectIdArr.push(itemData.objectId);
+            if (!objectIdArr.includes(itemData.objectId)) {
+              objectIdArr.push(itemData.objectId);
             }
 
             //append constraint type
-            if(!constraintTypeArr.includes(itemData.constraintType)){
-                constraintTypeArr.push(itemData.constraintType);
+            if (!constraintTypeArr.includes(itemData.constraintType)) {
+              constraintTypeArr.push(itemData.constraintType);
             }
 
-            constraint =itemData;
+            constraint = itemData;
             //remove unused fields
             delete constraint["constraintType"];
             delete constraint["createdAt"];
@@ -118,9 +113,8 @@ module.exports = {
         setConstraint(parseOjbArr);
     },
     getConstraint: function(json){
-
         var key = json ? (json.key ? json.key : "" ) : "";
-        if(key != ""){
+        if (key != "") {
            return cache.definitions[key];
         }
         return cache;
@@ -129,8 +123,8 @@ module.exports = {
     initConstraint: function(){
         var query = new Parse.Query(cfg.collectionName);
         query.find().then(function(result){
-            if(result){
-                setConstraint(result);
+            if (result) {
+              setConstraint(result);
             }
 
         }).catch(function(error){
