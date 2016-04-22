@@ -11,5 +11,6 @@
   "array$ref":["item"
             ,"setting"
             ,"menu"
-            ,"menuItem"]
+            ,"menuItem"
+            ,"share"]
 }
