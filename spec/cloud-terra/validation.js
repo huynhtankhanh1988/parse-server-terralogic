@@ -26,7 +26,7 @@ tv4.addFormat('date-time', function (data, schema) {
       return null;
     }
     var check = new Date(data);
-    valid = !isNaN(check.valueOf());
+    var valid = !isNaN(check.valueOf());
 
     if (!valid) {
       return "Invalid datetime format.";
