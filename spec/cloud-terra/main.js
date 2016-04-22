@@ -78,10 +78,13 @@ Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
 
 Parse.Cloud.afterSave(cfg.collectionName, function(req) {
 
-  // save history
+    //the req contains the latest ParseObject.
+    var parseObjArr = [req.object];
+    cacheConstraint.notifySaved(parseObjArr);
+
+  /*// save history
   var query = new Parse.Query(cfg.collectionName);
   query.get(req.object.id, {
-
     success: function(objectDataBase) {
 
         if(objectDataBase){
@@ -94,10 +97,15 @@ Parse.Cloud.afterSave(cfg.collectionName, function(req) {
     error: function(object, error) {
       console.log("AfterSave: " + cfg.collectionName , error);
     }
-  });
+  });*/
 
 });
 
 Parse.Cloud.define('getAllConstraints', function(req, res) {
   res.success(cacheConstraint.getConstraint(null));
+});
+
+Parse.Cloud.afterDelete(cfg.collectionName, function(req) {
+    //the req contains db record had been deleted.
+    cacheConstraint.removeItems({objectId:req.object.id, constraintType: req.object.toJSON().constraintType});
 });

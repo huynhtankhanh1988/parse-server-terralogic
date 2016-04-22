@@ -152,7 +152,26 @@ module.exports = {
             exist = true;
           }
         }
-
         return exist;
+    },
+    removeItems:function(json){
+
+        if(json.objectId){
+            for(var i=0;i< objectIdArr.length;i++){
+                if(objectIdArr[i] === json.objectId){
+                    objectIdArr.splice(i,1);
+                    break;
+                }
+            }
+        }
+
+        if(json.constraintType){
+            for(var i=0;i< constraintTypeArr.length;i++){
+                if(constraintTypeArr[i] === json.constraintType){
+                    constraintTypeArr.splice(i,1);
+                    break;
+                }
+            }
+        }
     }
 }
