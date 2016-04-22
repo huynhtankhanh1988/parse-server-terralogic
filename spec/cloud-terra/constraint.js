@@ -74,9 +74,7 @@ function setConstraint(parseOjbArr){
         delete childMenuItem.items.properties["menu"];
 
         cache.definitions.ChildMenuItem = childMenuItem;
-
     }
-
 }
 
 function getSpecificConstraint(constraintType, parseOjbArr){
@@ -138,8 +136,23 @@ module.exports = {
     isExisted : function(json){
         var objectId = (json && json.objectId) ? json.objectId : "";
         var constraintType = (json && json.constraintType) ? json.constraintType : "";
-        var exist = objectIdArr.includes(objectId) ? true
-                                                    : (constraintTypeArr.includes(constraintType) ? true :false);
+        var exist = false;
+        //PUT
+        if(objectId != ""){
+            var count = 0;
+            for(var i=0;i< objectIdArr.length;i++){
+              if(objectIdArr[i] === objectId){
+                  count++;
+              }
+            }
+            exist = count > 1 ? true: false;
+        }else {
+          //POST
+          if(constraintTypeArr.includes(constraintType)){
+            exist = true;
+          }
+        }
+
         return exist;
     }
 }
