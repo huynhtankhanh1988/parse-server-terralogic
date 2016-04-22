@@ -1267,7 +1267,11 @@
         },
         "name": {
           "type": "string",
-          "maxLength": 255
+          "maxLength": 255,
+          "pattern": "^[A-Za-z0-9\\s]+$",
+          "errorMessage": {
+            "202": "Please use only letters (a-z), numbers and spaces."
+          }
         },
         "description": {
           "type": [
@@ -2059,5 +2063,3 @@
     }
   }
 }
-
-
