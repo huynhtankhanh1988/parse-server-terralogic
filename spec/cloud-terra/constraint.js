@@ -76,10 +76,8 @@ function setConstraint(parseOjbArr){
         cache.definitions.ChildMenuItem = childMenuItem;
 
     }
-    //
-    cache = refineJson(cache);
-}
 
+}
 
 function getSpecificConstraint(constraintType, parseOjbArr){
     var constraint = null;
@@ -105,6 +103,12 @@ function getSpecificConstraint(constraintType, parseOjbArr){
             break;
         }
     }
+
+    //refine data here
+    if(constraint != null && cfg["array#"].includes(constraintType)){
+        constraint = refineJson(constraint);
+    }
+
     return constraint;
 };
 
@@ -132,8 +136,8 @@ module.exports = {
         });
     },
     isExisted : function(json){
-        var objectId = (json && json.objectId) ? json.objectId : null;
-        var constraintType = (json && json.constraintType) ? json.constraintType : null;
+        var objectId = (json && json.objectId) ? json.objectId : "";
+        var constraintType = (json && json.constraintType) ? json.constraintType : "";
         var exist = objectIdArr.includes(objectId) ? true
                                                     : (constraintTypeArr.includes(constraintType) ? true :false);
         return exist;

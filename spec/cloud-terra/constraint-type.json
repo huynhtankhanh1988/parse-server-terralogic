@@ -7,5 +7,9 @@
       ,"menuItem":"menuItem"
       ,"share":"share"
   },
-  "collectionName":"Constraint"
+  "collectionName":"Constraint",
+  "array#":["item"
+            ,"setting"
+            ,"menu"
+            ,"menuItem"]
 }

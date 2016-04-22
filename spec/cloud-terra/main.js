@@ -30,7 +30,6 @@ models.forEach(function(model) {
 var cacheConstraint = require("./constraint");
 var constraint = require('./constraint-type');
 
-
 Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
 
   if(!req.object.get("constraintType")){
@@ -43,7 +42,23 @@ Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
       return;
   }
 
-  // check duplicate
+  var json ={};
+  if(req.object.id){
+    json.objectId =req.object.id;
+  }
+  if(req.object.get("constraintType")){
+    json.constraintType =req.object.get("constraintType");
+  }
+
+  //check from memory
+  var existed = cacheConstraint.isExisted(json);
+  if(existed){
+      res.error("constraintType is duplicated");
+  }else{
+      res.success();
+  }
+
+  /*// check duplicate
   var query = new Parse.Query(cfg.collectionName);
   query.equalTo("constraintType", req.object.get("constraintType"));
   if(req.object.id){
@@ -57,7 +72,7 @@ Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
     }
   }).catch(function(error){
         res.error(error);
-  });
+  });*/
 
 });
 
