@@ -4,7 +4,10 @@ var cfg = require("./constraint-type");
 //default constraint from data file.
 var cache = require("./parse-server-constraints");
 
-function buildShareConstraint(shareJson){
+var objectIdArr =[]; // store all record id
+var constraintTypeArr =[]; //contain all constraint type
+
+function buildShareConstraint(share){
 
     //todo need to dynamic column name here.
     //hardcode temporary
@@ -71,14 +74,13 @@ function setConstraint(parseOjbArr){
         //for child menu constraint
         var childMenuItem = deepcopy(menuItem);
         delete childMenuItem.items.properties["menu"];
-json
+
         cache.definitions.ChildMenuItem = childMenuItem;
 
     }
     //
     cache = refineJson(cache);
 }
-
 
 
 function getSpecificConstraint(constraintType, parseOjbArr){
@@ -88,6 +90,17 @@ function getSpecificConstraint(constraintType, parseOjbArr){
         var  itemData = parseOjbArr[i].toJSON();
 
         if(itemData.constraintType === constraintType){
+
+            //append ojbectId
+            if(!objectIdArr.includes(itemData.objectId)){
+                objectIdArr.push(itemData.objectId);
+            }
+
+            //append constraint type
+            if(!constraintTypeArr.includes(itemData.constraintType)){
+                constraintTypeArr.push(itemData.constraintType);
+            }
+
             constraint =itemData;
             //remove unused fields
             delete constraint["constraintType"];
@@ -123,5 +136,12 @@ module.exports = {
         }).catch(function(error){
             console.log("initConstraint",error);
         });
+    },
+    isExisted : function(json){
+        var objectId = (json && json.objectId) ? json.objectId : null;
+        var constraintType = (json && json.constraintType) ? json.constraintType : null;
+        var exist = objectIdArr.includes(objectId) ? true
+                                                    : (constraintTypeArr.includes(constraintType) ? true :false);
+        return exist;
     }
 }
