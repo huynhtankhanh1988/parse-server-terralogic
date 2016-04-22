@@ -105,7 +105,7 @@ function getSpecificConstraint(constraintType, parseOjbArr){
     }
 
     //refine data here
-    if(constraint != null && cfg["array#"].includes(constraintType)){
+    if(constraint != null && cfg["array$ref"].includes(constraintType)){
         constraint = refineJson(constraint);
     }
 

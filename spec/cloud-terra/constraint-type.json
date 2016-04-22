@@ -8,7 +8,7 @@
       ,"share":"share"
   },
   "collectionName":"Constraint",
-  "array#":["item"
+  "array$ref":["item"
             ,"setting"
             ,"menu"
             ,"menuItem"]
