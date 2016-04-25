@@ -2,36 +2,49 @@ const deepcopy = require('deepcopy');
 var cfg = require("./constraint-type");
 
 //default constraint from data file.
-var cache = require("./parse-server-constraints");
+//var memCache = require("./parse-server-constraints");
+var memCache = buildFullConstraints();
 
 //store all controlled objectId and constraint Type from DB
-var cacheObjInfo =[];
+var objCache =[];
 
-var cacheCopy = buildFullConstraints();
+//the last time edited cache memory
+var lastTime = -1;
 
 function buildShareConstraint(share){
     //todo need to dynamic column name here.
     //hardcode temporary
-    cache.definitions.Channel = share.Channel;
-    cache.definitions.PremiumFeeds = share.PremiumFeeds;
-    cache.definitions.Search = share.Search;
-    cache.definitions.PushBehavior = share.PushBehavior;
-    cache.definitions.Analytics = share.Analytics;
-    cache.definitions.Advertising = share.Advertising;
-    cache.definitions.BreakingNews = share.BreakingNews;
-    cache.definitions.Weather = share.Weather;
-    cache.definitions.Connect = share.Connect;
-    cache.definitions.Video = share.Video;
-    cache.definitions.StoreAccounts = share.StoreAccounts;
+    memCache.definitions.Channel = share.Channel;
+    memCache.definitions.PremiumFeeds = share.PremiumFeeds;
+    memCache.definitions.Search = share.Search;
+    memCache.definitions.PushBehavior = share.PushBehavior;
+    memCache.definitions.Analytics = share.Analytics;
+    memCache.definitions.Advertising = share.Advertising;
+    memCache.definitions.BreakingNews = share.BreakingNews;
+    memCache.definitions.Weather = share.Weather;
+    memCache.definitions.Connect = share.Connect;
+    memCache.definitions.Video = share.Video;
+    memCache.definitions.StoreAccounts = share.StoreAccounts;
 }
 function buildFullConstraints(){
 
     var item = require("./collection-config/item");
+    delete item.constraintType; // remove constraint type key
+
     var menu = require("./collection-config/menu");
+    delete menu.constraintType;
+
     var menuItem = require("./collection-config/menu-item");
+    delete menuItem.constraintType;
+
     var setting = require("./collection-config/setting");
+    delete setting.constraintType;
+
     var share = require("./collection-config/share");
+    delete share.constraintType;
+
     var style = require("./collection-config/style");
+    delete style.constraintType;
 
     var cfgData = {definitions:share};
     cfgData.definitions.StyleConfig = style;
@@ -59,6 +72,54 @@ function refineJson(data){
     return data;
 }
 
+function removeMemCache(constraintType){
+    if(constraintType ==="style"){
+        delete memCache.definitions["StyleConfig"];
+        return;
+    }
+
+    if(constraintType ==="item"){
+        delete memCache.definitions["ItemConfig"];
+        return;
+    }
+
+    if(constraintType ==="setting"){
+        delete memCache.definitions["SettingConfig"];
+        return;
+    }
+
+    if(constraintType ==="menu"){
+        delete memCache.definitions["MenuConfig"];
+        return;
+    }
+
+    if(constraintType ==="menuItem"){
+        delete memCache.definitions["MenuItem"];
+        return;
+    }
+
+    if(constraintType ==="menuItem"){
+        delete memCache.definitions["MenuItem"];
+        delete memCache.definitions["ChildMenuItem"];
+        return;
+    }
+
+    if(constraintType ==="share"){
+
+        delete memCache.definitions["Channel"];
+        delete memCache.definitions["PremiumFeeds"];
+        delete memCache.definitions["Search"];
+        delete memCache.definitions["PushBehavior"];
+        delete memCache.definitions["Analytics"];
+        delete memCache.definitions["Advertising"];
+        delete memCache.definitions["BreakingNews"];
+        delete memCache.definitions["Weather"];
+        delete memCache.definitions["Connect"];
+        delete memCache.definitions["Video"];
+        delete memCache.definitions["StoreAccounts"];
+    }
+}
+
 function setConstraint(parseOjbArr){
     var style =  getSpecificConstraint(cfg.constraintType.style,parseOjbArr);
     var item = getSpecificConstraint(cfg.constraintType.item,parseOjbArr);
@@ -69,7 +130,7 @@ function setConstraint(parseOjbArr){
 
     //for style
     if (style != null) {
-        cache.definitions.StyleConfig = style;
+        memCache.definitions.StyleConfig = style;
     }
 
     //for share
@@ -79,55 +140,64 @@ function setConstraint(parseOjbArr){
 
     //for item constraint
     if (item != null) {
-        cache.definitions.ItemConfig = item;
+        memCache.definitions.ItemConfig = item;
     }
 
     //for setting constraint
     if (setting != null) {
-        cache.definitions.SettingConfig = setting;
+        memCache.definitions.SettingConfig = setting;
     }
 
     //for menu constraint
     if (menu != null) {
-        cache.definitions.MenuConfig = menu;
+        memCache.definitions.MenuConfig = menu;
     }
 
     //for menu item constraint
     if (menuItem != null) {
-        cache.definitions.MenuItem = menuItem;
+        memCache.definitions.MenuItem = menuItem;
 
         //for child menu constraint
         var childMenuItem = deepcopy(menuItem);
         delete childMenuItem.items.properties["menu"];
 
-        cache.definitions.ChildMenuItem = childMenuItem;
+        memCache.definitions.ChildMenuItem = childMenuItem;
     }
+
+    //set last time for constraint.
+    if(lastTime == -1){
+        var d = new Date();
+        lastTime = d.getTime();
+    }
+
 }
 
 function getSpecificConstraint(constraintType, parseOjbArr){
     var constraint = null;
     for (var i = 0; i < parseOjbArr.length; i++) {
 
-        //append cache object information
+        //start. append cache object information
         var existed = false;
-        for(var i =0;i< cacheObjInfo.length;i++){
-            if(cacheObjInfo[i].objectId === parseOjbArr[i].get("objectId")
-            || cacheObjInfo[i].constraintType === parseOjbArr[i].get("constraintType"))
+        for(var i =0;i< objCache.length;i++){
+            if(objCache[i].objectId === parseOjbArr[i].get("objectId")
+            || objCache[i].constraintType === parseOjbArr[i].get("constraintType"))
             {
                 existed = true;
+                break;
             }
         }
 
         if(!existed){
-            cacheObjInfo.push({objectId:parseOjbArr[i].get("objectId")
+            objCache.push({objectId:parseOjbArr[i].id
                                 ,constraintType:parseOjbArr[i].get("constraintType")});
         }
+        //end. append cache object information
 
-        //end append cache object infornamtion
 
-        constraint = parseOjbArr[i].toJSON();
-        if (constraint.constraintType === constraintType) {
+        if (parseOjbArr[i].get("constraintType") === constraintType) {
+            constraint = parseOjbArr[i].toJSON();
 
+            lastTime = Math.max(lastTime, parseOjbArr[i].get("updatedAt").getTime());
             //remove unused fields
             delete constraint["constraintType"];
             delete constraint["createdAt"];
@@ -136,6 +206,7 @@ function getSpecificConstraint(constraintType, parseOjbArr){
             break;
         }
     }
+
     return constraint;
 };
 
@@ -146,9 +217,9 @@ module.exports = {
     getConstraint: function(json){
         var key = json ? (json.key ? json.key : "" ) : "";
         if (key != "") {
-           return cache.definitions[key];
+           return memCache.definitions[key];
         }
-        return cache;
+        return memCache;
 
     },
     initConstraint: function(){
@@ -167,32 +238,40 @@ module.exports = {
         var constraintType = (json && json.constraintType) ? json.constraintType : "";
         var exist = false;
         var count = 0;
-        for(var i=0;i< cacheObjInfo.length;i++){
+        for(var i=0;i< objCache.length;i++){
           //by objectId
-          if(cacheObjInfo[i].objectId === objectId){
+          if(objCache[i].objectId === objectId && constraintType ==="" ){
               count++;
           }
 
           //by constraintType
-          if(cacheObjInfo[i].constraintType === constraintType){
+          if(objCache[i].constraintType === constraintType && objectId === ""){
               exist = true;
               break;
           }
         }
 
-        exist = exist ? exist:(count > 1: true :false);
+        exist = exist ? exist:(count > 1 ? true :false);
         return exist;
     },
     removeItems:function(json){
 
+        //remove object cache
         var objectId = (json && json.objectId)? json.objectId : "";
         var constraintType = (json && json.constraintType)? json.constraintType : "";
 
-        for(var i=0;i< cacheObjInfo.length;i++){
-            if(cacheObjInfo[i].objectId === objectId || cacheObjInfo[i].constraintType === constraintType ){
-                cacheObjInfo.splice(i,1);
+        for(var i=0;i< objCache.length;i++){
+            if(objCache[i].objectId === objectId || objCache[i].constraintType === constraintType ){
+                objCache.splice(i,1);
                 break;
             }
         }
+
+        //remove memory cache.
+        removeMemCache(constraintType);
+
+        //set time to current
+        var d = new Date();
+        lastTime = d.getTime();
     }
 }

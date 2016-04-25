@@ -82,5 +82,6 @@
       ],
       "format": "date-time"
     }
-  }
+  },
+  "constraintType":"menu"
 }
