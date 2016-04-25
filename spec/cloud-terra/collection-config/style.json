@@ -103,5 +103,6 @@
       ],
       "format": "date-time"
     }
-  }
+  },
+  "constraintType":"style"
 }

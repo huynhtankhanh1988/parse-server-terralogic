@@ -312,5 +312,6 @@
       ],
       "format": "date-time"
     }
-  }
+  },
+  "constraintType":"item"
 }

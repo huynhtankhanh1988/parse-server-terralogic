@@ -250,7 +250,7 @@
           }
         },
         "channels": {
-          "#$ref": "#/definitions/Channel"
+          "$ref": "#/definitions/Channel"
         }
       }
     },
@@ -1419,34 +1419,34 @@
           "additionalProperties": false,
           "properties": {
             "premiumFeeds": {
-              "#$ref": "#/definitions/PremiumFeeds"
+              "$ref": "#/definitions/PremiumFeeds"
             },
             "search": {
-              "#$ref": "#/definitions/Search"
+              "$ref": "#/definitions/Search"
             },
             "pushBehavior": {
-              "#$ref": "#/definitions/PushBehavior"
+              "$ref": "#/definitions/PushBehavior"
             },
             "analytics": {
-              "#$ref": "#/definitions/Analytics"
+              "$ref": "#/definitions/Analytics"
             },
             "advertising": {
-              "#$ref": "#/definitions/Advertising"
+              "$ref": "#/definitions/Advertising"
             },
             "breakingNews": {
-              "#$ref": "#/definitions/BreakingNews"
+              "$ref": "#/definitions/BreakingNews"
             },
             "weather": {
-              "#$ref": "#/definitions/Weather"
+              "$ref": "#/definitions/Weather"
             },
             "connect": {
-              "#$ref": "#/definitions/Connect"
+              "$ref": "#/definitions/Connect"
             },
             "video": {
-              "#$ref": "#/definitions/Video"
+              "$ref": "#/definitions/Video"
             },
             "storeAccounts": {
-              "#$ref": "#/definitions/StoreAccounts"
+              "$ref": "#/definitions/StoreAccounts"
             },
             "general": {
               "type": "object",
@@ -1611,34 +1611,34 @@
           }
         },
         "premiumFeeds": {
-          "#$ref": "#/definitions/PremiumFeeds"
+          "$ref": "#/definitions/PremiumFeeds"
         },
         "search": {
-          "#$ref": "#/definitions/Search"
+          "$ref": "#/definitions/Search"
         },
         "pushBehavior": {
-          "#$ref": "#/definitions/PushBehavior"
+          "$ref": "#/definitions/PushBehavior"
         },
         "analytics": {
-          "#$ref": "#/definitions/Analytics"
+          "$ref": "#/definitions/Analytics"
         },
         "advertising": {
-          "#$ref": "#/definitions/Advertising"
+          "$ref": "#/definitions/Advertising"
         },
         "breakingNews": {
-          "#$ref": "#/definitions/BreakingNews"
+          "$ref": "#/definitions/BreakingNews"
         },
         "video": {
-          "#$ref": "#/definitions/Video"
+          "$ref": "#/definitions/Video"
         },
         "weather": {
-          "#$ref": "#/definitions/Weather"
+          "$ref": "#/definitions/Weather"
         },
         "connect": {
-          "#$ref": "#/definitions/Connect"
+          "$ref": "#/definitions/Connect"
         },
         "storeAccounts": {
-          "#$ref": "#/definitions/StoreAccounts"
+          "$ref": "#/definitions/StoreAccounts"
         },
         "objectId": {
           "type": [
@@ -1703,7 +1703,7 @@
           "maxLength": 255
         },
         "menu": {
-          "#$ref": "#/definitions/MenuItem"
+          "$ref": "#/definitions/MenuItem"
         },
         "auditTrail": {
           "type": "object",
@@ -1910,7 +1910,7 @@
             ]
           },
           "menu": {
-            "#$ref": "#/definitions/ChildMenuItem"
+            "$ref": "#/definitions/ChildMenuItem"
           }
         }
       }
