@@ -4,8 +4,10 @@ var cfg = require("./constraint-type");
 //default constraint from data file.
 var cache = require("./parse-server-constraints");
 
-var objectIdArr = []; // store all record id
-var constraintTypeArr = []; //contain all constraint type
+//store all controlled objectId and constraint Type from DB
+var cacheObjInfo =[];
+
+var cacheCopy = buildFullConstraints();
 
 function buildShareConstraint(share){
     //todo need to dynamic column name here.
@@ -21,6 +23,31 @@ function buildShareConstraint(share){
     cache.definitions.Connect = share.Connect;
     cache.definitions.Video = share.Video;
     cache.definitions.StoreAccounts = share.StoreAccounts;
+}
+function buildFullConstraints(){
+
+    var item = require("./collection-config/item");
+    var menu = require("./collection-config/menu");
+    var menuItem = require("./collection-config/menu-item");
+    var setting = require("./collection-config/setting");
+    var share = require("./collection-config/share");
+    var style = require("./collection-config/style");
+
+    var cfgData = {definitions:share};
+    cfgData.definitions.StyleConfig = style;
+    cfgData.definitions.ItemConfig = item;
+    cfgData.definitions.SettingConfig = setting;
+    cfgData.definitions.MenuConfig = menu;
+    cfgData.definitions.MenuItem = menuItem;
+
+    //the last menu Item
+    var childMenuItem = deepcopy(menuItem);
+    delete childMenuItem.items.properties["menu"];
+    cfgData.definitions.ChildMenuItem = childMenuItem;
+
+    cfgData = refineJson(cfgData);
+
+    return cfgData;
 }
 
 function refineJson(data){
@@ -80,19 +107,27 @@ function setConstraint(parseOjbArr){
 function getSpecificConstraint(constraintType, parseOjbArr){
     var constraint = null;
     for (var i = 0; i < parseOjbArr.length; i++) {
-        var itemData = parseOjbArr[i].toJSON();
-        if (itemData.constraintType === constraintType) {
-            //append ojbectId
-            if (!objectIdArr.includes(itemData.objectId)) {
-              objectIdArr.push(itemData.objectId);
-            }
 
-            //append constraint type
-            if (!constraintTypeArr.includes(itemData.constraintType)) {
-              constraintTypeArr.push(itemData.constraintType);
+        //append cache object information
+        var existed = false;
+        for(var i =0;i< cacheObjInfo.length;i++){
+            if(cacheObjInfo[i].objectId === parseOjbArr[i].get("objectId")
+            || cacheObjInfo[i].constraintType === parseOjbArr[i].get("constraintType"))
+            {
+                existed = true;
             }
+        }
 
-            constraint = itemData;
+        if(!existed){
+            cacheObjInfo.push({objectId:parseOjbArr[i].get("objectId")
+                                ,constraintType:parseOjbArr[i].get("constraintType")});
+        }
+
+        //end append cache object infornamtion
+
+        constraint = parseOjbArr[i].toJSON();
+        if (constraint.constraintType === constraintType) {
+
             //remove unused fields
             delete constraint["constraintType"];
             delete constraint["createdAt"];
@@ -101,12 +136,6 @@ function getSpecificConstraint(constraintType, parseOjbArr){
             break;
         }
     }
-
-    //refine data here
-    if(constraint != null && cfg["array$ref"].includes(constraintType)){
-        constraint = refineJson(constraint);
-    }
-
     return constraint;
 };
 
@@ -137,40 +166,32 @@ module.exports = {
         var objectId = (json && json.objectId) ? json.objectId : "";
         var constraintType = (json && json.constraintType) ? json.constraintType : "";
         var exist = false;
-        //PUT
-        if(objectId != ""){
-            var count = 0;
-            for(var i=0;i< objectIdArr.length;i++){
-              if(objectIdArr[i] === objectId){
-                  count++;
-              }
-            }
-            exist = count > 1 ? true: false;
-        }else {
-          //POST
-          if(constraintTypeArr.includes(constraintType)){
-            exist = true;
+        var count = 0;
+        for(var i=0;i< cacheObjInfo.length;i++){
+          //by objectId
+          if(cacheObjInfo[i].objectId === objectId){
+              count++;
+          }
+
+          //by constraintType
+          if(cacheObjInfo[i].constraintType === constraintType){
+              exist = true;
+              break;
           }
         }
+
+        exist = exist ? exist:(count > 1: true :false);
         return exist;
     },
     removeItems:function(json){
 
-        if(json.objectId){
-            for(var i=0;i< objectIdArr.length;i++){
-                if(objectIdArr[i] === json.objectId){
-                    objectIdArr.splice(i,1);
-                    break;
-                }
-            }
-        }
+        var objectId = (json && json.objectId)? json.objectId : "";
+        var constraintType = (json && json.constraintType)? json.constraintType : "";
 
-        if(json.constraintType){
-            for(var i=0;i< constraintTypeArr.length;i++){
-                if(constraintTypeArr[i] === json.constraintType){
-                    constraintTypeArr.splice(i,1);
-                    break;
-                }
+        for(var i=0;i< cacheObjInfo.length;i++){
+            if(cacheObjInfo[i].objectId === objectId || cacheObjInfo[i].constraintType === constraintType ){
+                cacheObjInfo.splice(i,1);
+                break;
             }
         }
     }

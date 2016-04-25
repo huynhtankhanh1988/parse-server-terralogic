@@ -7,10 +7,5 @@
       ,"menuItem":"menuItem"
       ,"share":"share"
   },
-  "collectionName":"Constraint",
-  "array$ref":["item"
-            ,"setting"
-            ,"menu"
-            ,"menuItem"
-            ,"share"]
+  "collectionName":"Constraint"
 }
