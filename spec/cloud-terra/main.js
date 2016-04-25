@@ -1,31 +1,26 @@
-var config = require("./config.json");
-var models = config["models"];
 var validation = require("./validation.js");
 var cfg = require("./constraint-type");
 
-// for list model check from file config.json
-models.forEach(function(model) {
-  Parse.Cloud.beforeSave(model, function(req, res) {
-    // create object put param validate
-    var object={modelName:model,req:req,res:res};
-    //validate menu
-    if(model.indexOf("Menu")>=0){
-      validation.validateMenu(object);
-    //validate style
-    }else if(model.indexOf("Style")>=0){
-      validation.validateStyle(object);
-    //validate setting
-    }else if(model.indexOf("Setting")>=0){
-       validation.validateSetting(object);
-      // res.success();
-    } else if(model.indexOf("Item")>=0){
-      validation.validateItem(object);
-      // res.success();
-    } else{
-      res.success();
-    }
-  });
+// check validate model MenuConfig
+Parse.Cloud.beforeSave("MenuConfig", function(req, res) {
+  validation.validateMenu({modelName:"MenuConfig",req:req,res:res});
 });
+
+// check validate model StyleConfig
+Parse.Cloud.beforeSave("StyleConfig", function(req, res) {
+  validation.validateStyle({modelName:"StyleConfig",req:req,res:res});
+});
+
+// check validate model SettingConfig
+Parse.Cloud.beforeSave("SettingConfig", function(req, res) {
+  validation.validateSetting({modelName:"SettingConfig",req:req,res:res});
+});
+
+// check validate model ItemConfig
+Parse.Cloud.beforeSave("ItemConfig", function(req, res) {
+  validation.validateItem({modelName:"ItemConfig",req:req,res:res});
+});
+
 
 var cacheConstraint = require("./constraint");
 var constraint = require('./constraint-type');

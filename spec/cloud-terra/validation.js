@@ -118,8 +118,6 @@ function customizeErrors(jsonError) {
 * Validate data of item config
 */
 function validateDataItemConfig(object){
-  var env = object.modelName.replace("ItemConfig","");
-
   // check duplicate name
   var queryDuplicateName = new Parse.Query(object.modelName);
   queryDuplicateName.equalTo("name", object.req.object.get("name"));
@@ -128,7 +126,7 @@ function validateDataItemConfig(object){
   }
 
   // check exit app
-  var queryExistApp = new Parse.Query(env+"AppConfig");
+  var queryExistApp = new Parse.Query("AppConfig");
   queryExistApp.equalTo("objectId", object.req.object.get("uniqueAppId"));
 
   // check duplicate uniqueAppId
@@ -139,7 +137,7 @@ function validateDataItemConfig(object){
   }
 
   // check exist menu
-  var queryExistMenu = new Parse.Query(env+"MenuConfig");
+  var queryExistMenu = new Parse.Query("MenuConfig");
   if(object.req.object.get("menuId")){
     queryExistMenu.equalTo("objectId", object.req.object.get("menuId"));
   }
@@ -186,8 +184,6 @@ function validateDataItemConfig(object){
 * Validate data style config and setting config
 */
 function validateDataStyleSetting(schemal,object){
-  var env = object.modelName.replace(schemal,"");
-
   // check duplicate affiliateId
   var queryDuplicateAffiliate = new Parse.Query(object.modelName);
   queryDuplicateAffiliate.equalTo("affiliateId", object.req.object.get("affiliateId"));
