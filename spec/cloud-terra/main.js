@@ -51,7 +51,7 @@ Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
   if(existed){
       res.error("constraintType is duplicated");
   }else{
-      validationSchema.validateSchema(req:req,res:res},req.object.get("constraintType"));
+      validationSchema.validateSchema({req:req,res:res},req.object.get("constraintType"));
       // res.success();
   }
 
