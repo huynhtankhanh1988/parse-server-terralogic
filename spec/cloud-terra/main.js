@@ -1,4 +1,5 @@
 var validation = require("./validation.js");
+var validationSchema = require("./collection-config-validation/validation-schema.js");
 var cfg = require("./constraint-type");
 
 // check validate model MenuConfig
@@ -50,6 +51,7 @@ Parse.Cloud.beforeSave(cfg.collectionName, function(req,res) {
   if(existed){
       res.error("constraintType is duplicated");
   }else{
+      // validationSchema.validateSchema(req:req,res:res},req.object.get("constraintType"));
       res.success();
   }
 

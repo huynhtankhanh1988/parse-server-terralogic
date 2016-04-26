@@ -4,46 +4,37 @@ var propertiesMenu=require("./menu");
 var propertiesSetting=require("./setting");
 var propertiesShare=require("./share");
 var propertiesStyle=require("./style");
-var cfg = require("/spec/cloud-terra/constraint-type");
+var cfg = require("../constraint-type");
+var objectProperties ={};
+objectProperties[cfg.constraintType.item]=propertiesItem;
+objectProperties[cfg.constraintType.menuItem]=propertiesMenuItem;
+objectProperties[cfg.constraintType.menu]=propertiesMenu;
+objectProperties[cfg.constraintType.setting]=propertiesSetting;
+objectProperties[cfg.constraintType.share]=propertiesShare;
+objectProperties[cfg.constraintType.style]=propertiesStyle;
 
 module.exports = {
+
   //validate Schema Item
-  validateSchemaItem: function(obj) {
-    validate(obj,cfg.constraintType.item, propertiesItem);
+  validateSchema: function(obj,type) {
+    validateGeneral(obj,type);
   },
-
-  //validate Schema Menu Item
-  validateSchemaMenuItem: function(obj) {
-    validate(obj,cfg.constraintType.menuItem, propertiesMenuItem);
-  },
-
-  //validate Schema Menu
-  validateSchemaMenu: function(obj) {
-    validate(obj,cfg.constraintType.menu, propertiesMenu);
-  },
-
-  //validate schema setting
-  validateSchemaSetting: function(obj) {
-    validate(obj,cfg.constraintType.setting, propertiesSetting);
-  },
-  //validate schema setting
-  validateSchemaShare: function(obj) {
-    validate(obj,cfg.constraintType.share, propertiesShare);
-  },
-  //validate schema setting
-  validateSchemaStyle: function(obj) {
-    validate(obj,cfg.constraintType.style, propertiesStyle);
-  }
 
 };
 
-
-//validate data public
-function validate(obj,type, properties) {
+//validate data general
+function validateGeneral(obj,type, properties) {
+  if(!properties){
+    // get properties follow type
+    properties=objectProperties[type];
+  }
   // properties check list
   var keyPropertiesCheck;
+  var keyRejects=[];
   var checkValidate=true;
+  // get model from req
   var model=obj.req.object.toJSON();
+  // check primary properties follow type
   if((type===cfg.constraintType.item||type===cfg.constraintType.menu || type === cfg.constraintType.setting || type === cfg.constraintType.style ) && model && model.properties){
       keyPropertiesCheck=Object.keys(model.properties);
   }else if(type===cfg.constraintType.menuItem && model && model.items && model.items.properties){
@@ -54,6 +45,7 @@ function validate(obj,type, properties) {
   if(keyPropertiesCheck){
     keyPropertiesCheck.map(function(itemProperties) {
         if(!(properties.indexOf(itemProperties) > -1)){
+          keyRejects.push(itemProperties);
           checkValidate=false;
         }
     });
@@ -61,6 +53,6 @@ function validate(obj,type, properties) {
   if(checkValidate){
     obj.res.success();
   }else{
-    obj.res.error("Schemal "+type+" invalid");
+    obj.res.error("Schemal "+type+" invalid. Reject: ["+keyRejects.join()+"]");
   }
 };
